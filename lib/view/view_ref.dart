@@ -1,4 +1,4 @@
-library angular.dom.view;
+library angular.dom.view_ref;
 
 import "view.dart" show View;
 
@@ -23,3 +23,6 @@ class ViewRef {
    */
   toString() => isStale ? '<<stale>>' : _view.toString();
 }
+
+/// PRIVATE METHOD TO FROMEWORK
+View unwrapView(ViewRef viewRef) => viewRef._view;

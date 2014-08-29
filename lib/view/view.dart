@@ -76,5 +76,4 @@ class View {
    * instantiating the Views.
    */
   final DirectiveInjector headDirectiveInjector = null, tailDirectiveInjector = null;
-
 }
