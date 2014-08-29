@@ -6,5 +6,5 @@ import "view.dart" show View;
  * 
  */
 class ViewFactory {
-  View create();
+  View create() { return null; }
 }

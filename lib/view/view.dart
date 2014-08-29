@@ -3,7 +3,7 @@ library angular.dom.view_impl;
 import "dart:html" show Node;
 import "view_factory.dart" show ViewFactory;
 import "view_port.dart" show ViewPort;
-import "directive_injector.dart" show DirectiveInjector;
+import "../directive/injector.dart" show DirectiveInjector;
 
 
 /**
@@ -38,6 +38,25 @@ import "directive_injector.dart" show DirectiveInjector;
  * - Scheduling removal of DOM elements from [ViewPort] anchor element
  * - Releasing DirectiveInjector instances (optionally calling detach on directive instances)
  * - Un-linking the DirectiveInjector
+ * 
+ * # Logical Structure of View
+ * 
+ *     View
+ *       |
+ *       + - DirectiveInjector
+ *       |     |
+ *       |     + - DirectiveInjector
+ *       |
+ *       + - DirectiveInjector
+ *       |
+ *       +-ViewPort
+ *          |
+ *          +- View
+ *          +- View
+ *          +- View
+ * 
+ * NOTE: the DirecitveInjectors are shown as a tree, event though they are stored as depth-first
+ *       linked list for fast iteration.
  *
  */
 class View {
