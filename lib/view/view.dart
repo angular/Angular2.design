@@ -1,4 +1,4 @@
-library angular.dom.view_impl;
+library angular.dom.view;
 
 import "dart:html" show Node;
 import "view_factory.dart" show ViewFactory;
@@ -59,11 +59,21 @@ import "../directive/injector.dart" show DirectiveInjector;
  *       linked list for fast iteration.
  *
  */
-class View {
+class View extends LinkedListEntry<View> {
   /**
    * The view Factory which created this view and is responsible for caching these Views.
    */
+  // TODO(tobias) do we need this here?
   final ViewFactory viewFactory = null;
+
+  // TODO(tobias) maybe we don't need this state here but only in the ViewFactory...
+  /// View is ready for reuse.
+  static final int STATE_DEHYDRATED = 0;
+  /// View is actively used. Directives are instantiated
+  static final int STATE_LIVE = 1;
+  /// View is dead, but it can not be reused because of animations going on
+  static final int STATE_FROZEN = 2;
+  int state;
 
   /**
    * A set of DOM nodes which this [View] considers roots.
@@ -71,28 +81,22 @@ class View {
   final List<Node> nodes = null;
 
   /**
-   * If true than [View] is part of [ViewPort] if false than it is cached view ready for reuse.
-   */
-  bool isAttached;
-
-  /**
-   * If attached, than next/prev is used by [ViewPort] to keep a linked list of all [View]s.
-   * If detached than next/prev is used by [ViewFactory] to keep a linked list of all cached
-   * [View]s available for reuse.
-   *
-   * Attaching/detaching requires moving the View from one list to the other.
-   */
-  View nextView, prevView;
-  
-  /**
    * A [View] can have zero or mare [ViewPort]s. Use head/tail to keep track of the [ViewPort]s. 
    * The [ViewPort] list is fixed once the [View] is created.
    */
-  final ViewPort headViewPort = null, tailViewPort = null;
-  
+  final List<ViewPort> viewPorts = null;
+
   /**
    * A [View] has a depth-first liste of [DirectiveInjector]s which are used for
    * instantiating the Views.
    */
-  final DirectiveInjector headDirectiveInjector = null, tailDirectiveInjector = null;
+  final List<DirectiveInjector> directiveInjectors = null;
+  
+    // TODO(misko/tobias): Do we actually need diges/flush pair? is Single WatchGroup enough?
+  final WatchGroup watchGroupDigest = null;
+  final WatchGroup watchGroupFlush = null;
+
 }
+
+// TODO(misko): describe hydrate/de-hydrate process? or Reference it from here.
+// TODO(misko): View needs to have ref to WatchGroup
