@@ -7,6 +7,8 @@ class ProtoView {
   // TODO(misko/tobias): Do we actually need diges/flush pair? is Single WatchGroup enough?
   final ProtoWatchGroup protoWatchGroupDigest = null;
   final ProtoWatchGroup protoWatchGroupFlush = null;
+  
+  // TODO(misko): What about event registration?
 
   View instance;
 }

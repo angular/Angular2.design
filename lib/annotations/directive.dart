@@ -1,7 +1,5 @@
 library angular.annotations.directive;
 
-import "visibility.dart" show Visibility;
-
 /**
  * Abstract supper class of [Controller], [Component], and [Decorator].
  */
@@ -23,22 +21,6 @@ abstract class Directive {
   final String selector;
 
   /**
-   * A directive/component controller class can be injected into other
-   * directives/components. This attribute controls whether the
-   * controller is available to others.
-   *
-   * * `local` [Directive.LOCAL_VISIBILITY] - the controller can be injected
-   *   into other directives / components on the same DOM element.
-   * * `children` [Directive.CHILDREN_VISIBILITY] - the controller can be
-   *   injected into other directives / components on the same or child DOM
-   *   elements.
-   * * `direct_children` [Directive.DIRECT_CHILDREN_VISIBILITY] - the
-   *   controller can be injected into other directives / components on the
-   *   direct children of the current DOM element.
-   */
-  final Visibility visibility;
-
-  /**
    * A directive can request to be notified of events by calling a method. 
    * The events handlers get called by both the Angular events from [EventSource]
    * as well as from DOM events, if prefixed by `#`.
@@ -54,10 +36,13 @@ abstract class Directive {
    *       onDomClick(dom.Event event) { ... }
    *       whenCustom(Event event) { ... }
    *     }
+   *
+   * 
+   * DESIGN: https://docs.google.com/document/d/1d-yxmxMVqZHHadvxQaC2CCvcAR17JUQ1Qs4RT6Rwp6Y
    */
   final Map<String, String> events;
   
-  
+
   final Map<String, String> bind;
   
   
@@ -68,7 +53,6 @@ abstract class Directive {
   
   const Directive({ 
     this.selector,
-    this.visibility,
     this.events,
     this.bind,
     this.observe,

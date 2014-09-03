@@ -12,7 +12,7 @@ import "event.dart" show Event;
  * 
  *       doSomething() {
  *         dynamic optionalPayload = ...;
- *         eventSource.emit('custom-event', optionalPayload);
+ *         eventSource.emit('custom-event', data: optionalPayload);
  *       }
  *     }
  */
