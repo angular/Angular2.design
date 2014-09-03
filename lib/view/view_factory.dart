@@ -1,6 +1,6 @@
 library angular.dam.view_factory;
 
-import "view.dart" show ViewRef;
+import "view_ref.dart" show ViewRef;
 
 /**
  * 

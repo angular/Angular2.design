@@ -1,5 +1,6 @@
 library change_detection.proto_record;
 
+import "record.dart" show Record;
 
 class ProtoRecord {
   // SAME FIELDS AS RECORD (BUT PROTOTYPE VERSIONS)
@@ -9,20 +10,20 @@ class ProtoRecord {
   int _mode;
 
   /// order list of all records. Including head/tail markers
-  RecordPrototype _next, _previous;
+  ProtoRecord _next, _previous;
 
   /// next record to dirty check (doubly to remove notified records)
-  RecordPrototype _checkNext, _checkPrevious;
+  ProtoRecord _checkNext, _checkPrevious;
 
   // next notifier
-  RecordPrototype _notifierNext;
+  ProtoRecord _notifierNext;
 
   /// The record that triggers notifyListeners
-  RecordPrototype _recordSrc; 
+  ProtoRecord _recordSrc; 
   /// The head of the list of listener to trigger
-  ChangeListenerProtototype _listenerHead;
+  ProtoChangeListener _listenerHead;
   /// The link that form the listener list
-  ChangeListenerPrototype _listenerNext;
+  ProtoChangeListener _listenerNext;
 
 
   ////////

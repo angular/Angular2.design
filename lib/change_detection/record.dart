@@ -1,5 +1,8 @@
 library change_detection.record;
 
+import "change_listener.dart" show ChangeListener;
+import "watch_group.dart" show WatchGroup;
+
 /**
  * Represents a Record for keeping track of changes. A change is a difference between previous
  * and current value. 
@@ -77,15 +80,7 @@ class Record implements ChangeListener {
     // to notify of changes. (removing listener, is rare, but will
     //   require linear sort through _listenerSrc._listenerHead to
     //   unlink)
-    if (changes) notifyListeners(current, previous);
-  }
-
-  void _notifyListeners(current, previous) {
-    ChangeListener child = _listenerHead;
-    while(child != null) {
-      child.notify(current, previous)
-      child = child._listenerNext;
-    }
+    return false;
   }
 
   void onChange(current, previous) {

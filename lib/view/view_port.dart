@@ -1,6 +1,7 @@
 library angular.dom.view_port;
 
 import "view.dart" show View;
+import "../lists/linked_list.dart" show LinkedList;
 
 /**
  * ViewPort is a place where a [View] can be inserted.

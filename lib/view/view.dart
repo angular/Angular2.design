@@ -3,7 +3,9 @@ library angular.dom.view;
 import "dart:html" show Node;
 import "view_factory.dart" show ViewFactory;
 import "view_port.dart" show ViewPort;
-import "../directive/injector.dart" show DirectiveInjector;
+import "../directive_injector/injector.dart" show DirectiveInjector;
+import "../lists/linked_list.dart" show LinkedListEntry;
+import "../change_detection/watch_group.dart" show WatchGroup;
 
 
 /**
