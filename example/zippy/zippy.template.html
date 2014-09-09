@@ -1,0 +1,10 @@
+<div>
+  <div class="header">${title}</div>
+  <div class="left-align" (click)="toggle()">*</div>
+
+  <!-- TODO(misko): how do we animate open/close -->
+  <content [selector]="opened ? '' : '__nothing__'"></content>
+
+  <!-- this mode will allow for animation -->
+  <content [ng-if]="opened"></content>
+</div>
