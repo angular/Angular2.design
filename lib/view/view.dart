@@ -3,7 +3,7 @@ library angular.dom.view;
 import "dart:html" show Node;
 import "view_factory.dart" show ViewFactory;
 import "view_port.dart" show ViewPort;
-import "../directive_injector/injector.dart" show DirectiveInjector;
+import "../directive_injector/directive_injector.dart" show DirectiveInjector;
 import "../lists/linked_list.dart" show LinkedListEntry;
 import "../change_detection/watch_group.dart" show WatchGroup;
 
@@ -93,6 +93,18 @@ class View extends LinkedListEntry<View> {
    * instantiating the Views.
    */
   final List<DirectiveInjector> directiveInjectors = null;
+
+  /** 
+   * A list of all scheduled DOM read operations. Use head/tail to build the list. 
+   * These operations must be executed in the bottom-up order.
+  */
+  final List<Function> domReads = null;
+  
+  /** 
+   * A list of all scheduled DOM write operations. Use head/tail to build the list. 
+   * These operations must be executed in the bottom-up order.
+  */
+  final List<Function> domWrites = null;
   
     // TODO(misko/tobias): Do we actually need diges/flush pair? is Single WatchGroup enough?
   final WatchGroup watchGroupDigest = null;

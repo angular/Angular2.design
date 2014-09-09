@@ -1,0 +1,187 @@
+Query API. Implementation Notes
+
+
+
+The Query API allows a directive to get access to other directives in the same directive injector subtree.
+
+Query Scopes:
+
+* @self - the current DirectiveInjector.
+* @children - direct children of the current DirectiveInjector in the light dom.
+* @descendents - all descendents of the current DirectiveInjector in the light dom.
+* @shadowDomChildren - direct children of the current DirectiveInjector in the shadow dom.
+* @shadowDomDescendents - direct children of the current DirectiveInjector in the shadow dom.
+
+
+
+
+To see Query API in action let's look at the following example:
+
+<tabs>
+  <pane value='first'><pane>
+  <pane ng-if='showSecondPane' value='second'><pane>
+</tabs>
+
+@Component(selector: 'tabs', template: '<content></content>')
+class Tabs {
+  Query<Pane> panes;
+
+  Tabs(@children this.panes, Logger log) {
+  	panes.listen(() {
+  	  log(panes.map((c) => c.value));
+  	  log(panes.map((c) => c.value));
+  	});
+  }
+}
+
+@Component(selector: 'pane')
+class Pane {
+  @NgAttr("value") String value;
+}
+
+
+The directive injector of the Tabs component requests an instance of `Query<Pane>` while constructing an instance of Tabs. 
+The directive injector checks if there is a query matching the requested type. Since there is none, it will create a new one:
+
+	query1 = constructQueryFor(Pane);
+	queryScope1 = CHILDREN;
+
+At this point Angular creates a directive injector for creating the first pane. 
+In its constructor the directive injector copies the just created query object:
+
+	inheritedQuery1 = parent.query1;
+	queryScope1 = SELF;
+
+Note, that it uses a different slot to store the query. This is because inherited queries are handled differently in some situations. 
+In addition, it changes the scope of the query to SELF. 
+
+A bit later, after the `Pane` has been constructed, the query object will be marked as dirty:
+
+	inheritedQuery1.markAsDirty();
+
+Note, that marking a query object as dirty just sets the dirty flag to true. 
+
+The query object via an async queue notifies the listener, which executes:
+
+  	log(panes.map((c) => c.value));
+  	log(panes.map((c) => c.value));
+
+Since the query has been marked as dirty, the stored cache is not up-to-date. To rebuild the cache, the query objects
+traverses the tree of directive injectors. The second call to `map` does not walk the tree of injectors and just uses the cache.
+
+Next, let's set `showSecondPane` to true. This results in creating another directive injector that in its constructor will copy the created query:
+
+	copiedQuery1 = parent.query1;
+	queryScope1 = SELF;
+
+The creation of the second Pane results in:
+
+	copiedQuery1.markAsDirty();
+
+...
+
+
+
+
+
+Invididual Operations:
+
+
+Copy Parent's Queries
+=================================================
+
+When creating a new DirectiveInject, we need to copy all the parent's queries that have scope != SELF.
+
+	class DirectiveInjector {
+		DirectiveInjector() {
+		  //...
+
+		  if (parent.query1 != null && parent.queryScope1 != SELF) {
+		    this.copiedQuery1 = query1;
+			  this.copiedQueryScope1 = parentToChildQueryScope(parent.queryScope1);
+		  }
+		  //same for parent.query2, parent.copiedQuery1, parent.copiedQuery2.
+		}
+	}
+
+	parentToChildQueryScope(queryScope) {
+	  if (queryScope == CHILDREN) return SELF:
+	  if (queryScope == DESCENDANTS) return DESCENDANTS:
+	}
+
+
+
+Create New Query
+=================================================
+
+A new query object gets created when it is requested by a directive. If there is already a query matching the criteria, it should be returned. 
+We create a new query even if there is an existing copied query matching the criteria.
+
+	class DirectiveInjector {
+		getByKey() {
+		  //...
+
+		  if(query1 != null && query1.matchers(requestedQueryType)) return query1;
+		  query1 = constructQueryObject(requestedQueryType);
+		}
+	}
+
+
+
+Mark Query as Dirty
+=================================================
+
+	class Query {
+		DirectiveInjector _inj;
+		//...
+		
+		void markAsDirty(){
+    	  if (_dirty) return;
+    	  _dirty = true;
+    	  _inj.scope.runAsync(notifyListeners);
+  	}
+
+  	void notifyListeners(){
+  	}
+
+		//...
+	}
+
+
+Update Query's Cache
+=================================================
+	
+The update operation is triggered only if the query is marked as dirty, and there is a client that requested the data by calling `forEach`.
+
+	class Query {
+		DirectiveInjector _inj;
+		//...
+		
+		void _updateQueryCache() {
+		  _processDirectiveInjector(DirectiveInjector injector) {
+	      //queries do not cross component boundaries
+	  	  if (injector is ComponentDirectiveInjector) return;
+
+      	_list.addAll(injector.directives.where(shouldInclude));
+      	injector._children.forEach(_processDirectiveInjector);
+		  }
+
+		  _list = [];
+		  _processDirectiveInjector(this._inj);
+		}
+
+		bool shouldInclude(directive) => null;
+		//...
+	}
+
+
+Move DirectiveInjector
+=================================================
+
+If a DirectiveInjecter gets removed or moved to another place in the tree, we need to mark all copied queries as dirty. 
+Not copied queries do not have to be marked as dirty.
+
+	onMove() {
+	  if (copiedQuery1 != null) copiedQuery1.markAsDirty();
+	  if (copiedQuery2 != null) copiedQuery1.markAsDirty();
+	}

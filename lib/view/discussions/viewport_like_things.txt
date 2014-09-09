@@ -1,0 +1,31 @@
+ViewPort, Components and Content Tags
+
+ViewPort has the following responsibilities:
+- placeholder for 0..* views.
+- animations
+- view lifecycle management (e.g., it should call `view.attach` and `view.detach`).
+
+
+AngularDart has two other ViewPort-like things: components and content tags.
+
+1. Components
+
+The component has a shadow dom view. Right now when instantiating a component we 
+actually construct a view object, but then we throw it away:
+
+  final view = viewFactory.call(shadowInjector.scope, shadowInjector);
+  shadowDom.nodes.addAll(view.nodes);
+
+However, to be able to change the way attach/detach works we will have to keep the view object around. 
+Which means that the component soon will have the following responsibilities:
+- placeholder for 0..1 views.
+- view lifecycle management.
+
+2. Content Tags
+
+The content tag is a placeholder for DOM nodes. It should not call attach/detach or animate.
+
+
+These three things: view ports, components, and content tags are insertion points. 
+They are used to insert new elements into the DOM. Right now they are handled separately. 
+It may be a good idea to define a common interface that all of them can implement.

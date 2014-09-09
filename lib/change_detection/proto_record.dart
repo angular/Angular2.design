@@ -30,3 +30,5 @@ class ProtoRecord {
   // temporary location to store instance while resolving pointers
   Record instance;
 }
+
+class ProtoChangeListener{}
