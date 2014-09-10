@@ -3,6 +3,7 @@ library angular.dom.view;
 import "dart:html" show Node;
 import "view_factory.dart" show ViewFactory;
 import "view_port.dart" show ViewPort;
+import "view_ref.dart" show ViewRef;
 import "../directive_injector/directive_injector.dart" show DirectiveInjector;
 import "../lists/linked_list.dart" show LinkedListEntry;
 import "../change_detection/watch_group.dart" show WatchGroup;
@@ -111,6 +112,9 @@ class View extends LinkedListEntry<View> {
   final WatchGroup watchGroupFlush = null;
 
 }
+
+ViewRef wrapView(View view) => null;
+
 
 // TODO(misko): describe hydrate/de-hydrate process? or Reference it from here.
 // TODO(misko): View needs to have ref to WatchGroup

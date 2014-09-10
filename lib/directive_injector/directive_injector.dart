@@ -7,7 +7,6 @@ import "../dom/element_probe.dart" show ElementProbe;
 import "../dom/ng_element.dart" show NgElement;
 import "../dom/source_light_dom.dart" show SourceLightDom;
 import "../dom/destination_light_dom.dart" show DestinationLightDom;
-import "../events/event_source.dart" show EventSource;
 import "../view/view.dart" show View;
 import "../view/view_port.dart" show ViewPort;
 import "../view/view_factory.dart" show ViewFactory;
@@ -47,7 +46,6 @@ class DirectiveInjector {
    View view;
    ViewPort viewPort;
    ViewFactory viewFactory;
-   EventSource eventSource;
    Animate animate;
    DestinationLightDom destinationLightDom;
    SourceLightDom sourceLightDom;

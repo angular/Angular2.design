@@ -4,7 +4,7 @@ import "../../lib/angular.dart";
 
 @Component(
   selector: 'zippy',
-  templateUrl: 'zippy.template.html'
+  templateUrl: 'zippy.html'
 )
 class Zippy {
   @Property('title')

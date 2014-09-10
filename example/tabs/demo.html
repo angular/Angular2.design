@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <tabs (change)="onContactSelection(target.selected)">
+      <pane name="Overview" [value]="null">...</pane>
+      <pane [ng-repeat|contact]="contacts" [name]="contact.name" [value]="contact">
+        ${p.text} 
+      </pane>
+    </tabs>
+  </body>
+</html>

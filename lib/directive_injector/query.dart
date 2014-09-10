@@ -1,6 +1,6 @@
 library angular.directive_injector.query;
 
-import "dart:collection" show ListBase;
+import "dart:collection" show ListBase, Iterable;
 import "directive_injector.dart" show DirectiveInjector;
 
 /**
@@ -17,12 +17,12 @@ import "directive_injector.dart" show DirectiveInjector;
  *       template: '<ul><li [ng-repeat|pane]="panes">${pane.title}</li></ul>'
  *     )
  *     class Tabs {
- *       @children Query<Pane> panes;
+ *       Query<Pane> panes;
  * 
- *       Tabs(this.panes);
+ *       Tabs(@children this.panes);
  * 
  *       onEvent() {
- *         panes.forEach((p) => p.notify());
+ *         panes.iterable.forEach((p) => p.notify());
  *       }
  *     }
  * 
@@ -51,9 +51,9 @@ import "directive_injector.dart" show DirectiveInjector;
  *       template: '<ul><li [ng-repeat|pane]="panes">${pane.title}</li></ul>'
  *     )
  *     class Tabs {
- *       @children Query<Pane> panes;
+ *       Query<Pane> panes;
  * 
- *       Tabs(this.panes) {
+ *       Tabs(@children this.panes) {
  *         panes.listen(() => processUpdatedPanes(panes));
  *       }
  *     }
@@ -82,13 +82,18 @@ class Query<T> extends ListBase<T> {
 	///marks query as dirty and schedules an async task to notify the listeners.
 	void markAsDirty() {}
 
-	///checks if dirty. if true, then recompulte _list and call _list.forEach. 
-	///if false, call _list.forEach. 
-	///same for all list operations.
-	void forEach(fn) {} 
-	
 	operator[](i) => null;
-	operator[]=(i, v) {}
+	operator[]=(i, v) {}  //TODO(vsavkin): should not need `operator[]=`. We should provide only read operations.
 	set length(val) {}
 	get length => null;
+}
+
+abstract class _QueryIterable<T> implements Iterable<T> {
+	///a reference to the query object that created the iterable
+	Query _query;
+
+	///checks if _query.dirty. if true, then recompulte _query._list and call _query._list.forEach. 
+	///if false, call _query._list.forEach. 
+	///same for all list operations.
+	void forEach(fn) {} 
 }

@@ -7,15 +7,16 @@ class Component extends Directive {
   
   const Component({
     String selector,
-    this.templateUrl,
     Map<String, String> events,
     Map<String, String> bind,
     Map<String, String> observe,
-    bool canChangeModel
+    bool canChangeModel,
+    String templateUrl
   }): super(
     selector: selector,
     events: events,
     bind: bind,
     observe: observe,
-    canChangeModel: canChangeModel);
+    canChangeModel: canChangeModel),
+    templateUrl = templateUrl;
 }

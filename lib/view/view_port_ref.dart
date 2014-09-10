@@ -1,7 +1,10 @@
 library angular.dom.view_port_ref;
 
-import "view_port.dart" show ViewPor;
+import "view.dart" show wrapView;
+import "view_ref.dart" show unwrapView;
+import "view_port.dart" show ViewPort;
 import "view_ref.dart" show ViewRef;
+import "view_factory.dart" show ViewFactory;
 
 /**
  * Since ViewPorts are cacheable the goal is to never give out an instance of [ViewPort] to an application,
@@ -17,17 +20,18 @@ class ViewPortRef {
   /**
    * True if underlying view has been released/reused.
    */
-  bool get isStale => _view == null;
+  bool get isStale => _viewPort == null;
 
-  View insert(ViewRef view, { View insertAfter }) =>
-      _viewPort.insert(unwrapView(view), insertAfter: unwrapView(insertAfter));
+  ViewRef insert(ViewFactory viewFactory, { ViewRef insertAfter }) =>
+      wrapView(_viewPort.insert(unwrapView(viewFactory.create()),
+               insertAfter: unwrapView(insertAfter)));
 
   ViewRef move(ViewRef view, { ViewRef insertAfter }) =>
-      _viewPort.move(unwrapView(view), insertAfter: unwrapView(view));
+      wrapView(_viewPort.move(unwrapView(view), insertAfter: unwrapView(view)));
 
   ViewRef remove(ViewRef view) =>
-      _viewPort.remove(unwrapView(view));
+      wrapView(_viewPort.remove(unwrapView(view)));
 }
 
-/// PRIVATE METHOD TO FROMEWORK
+/// PRIVATE METHOD TO FRAMEWORK
 ViewPort unwrapViewPort(ViewPortRef viewPortRef) => viewPortRef._viewPort;

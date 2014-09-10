@@ -1,0 +1,8 @@
+<div class="border">
+  <div class="tabs">
+    <div [ng-repeat|pane]="panes" class="tab" (^click)="select(pane)">
+      <img [src]="pane.icon"><span>${tab.name}</span>
+    </div>
+  </div>
+  <content></content>
+</div>

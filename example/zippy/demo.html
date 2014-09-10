@@ -1,10 +1,11 @@
 <html>
   <body>
     <!-- TODO(misko): #id can reffer to component, but what if we want to reffer to Element -->
-    <zippy #id="zippy" title="Greeting">
+    <zippy #zippy title="Greeting">
       Body of the text which is shown conditionally.
       <a href (hover)="zippy.close()">hover to close</a>.
     </zippy>
+    <button (click)="zippy.toggle()">toggle</button>
     
     <zippy title="Defaults" opened="true">
       TODO(misko): should we coerse the string attribute to boolean property?
