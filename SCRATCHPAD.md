@@ -78,3 +78,47 @@ class Form {
    */
   final Visibility visibility;
   
+
+
+<div>
+  <pane [ng-repeat|p]="items" [name]="p.name">${foo}</pane>
+</div>
+  
+<div>
+  <pane [ng-repeat] [text|0]="foo"><!--${foo}--></pane>
+</div>
+
+<div>
+  <tempalte class='ng-binding' type="anchor"></template>
+</div>
+
+
+<pane [ng-repeat] [text|0]="foo">
+  <template class='ng-binding' type="anchor"></template>
+</pane>
+
+<pane [ng-repeat] [text|0]="foo"><!--${foo}--></pane>
+
+
+mapping from token to library ref.
+
+====================================
+
+import "package:angular/directives.dart" deferef as ngDirectives;
+
+main() {
+ applicationFactory()
+    .lazyLoad('core', ngDirectives)
+    .rootContextType(HelloWorldController)
+    .run();
+}
+
+ngDirectives.load(() {
+   ngDirectcives.register();
+})
+
+====================================
+library angular.directives;
+
+register() {
+}

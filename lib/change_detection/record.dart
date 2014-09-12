@@ -39,13 +39,14 @@ class Record implements ChangeListener {
   /// order list of all records. Including head/tail markers
   Record _next, _previous; // 3, 4
 
-  /// next record to dirty check (doubly to remove notified records)
-  Record _checkNext, _checkPrevious; // 5, 6
+  /// next record to dirty check 
+  Record _checkNext, _checkPrev; // 5, 6
 
   // next notifier
   Record _notifierNext; // 7
 
   /// Release associated resources
+  // TODO(misko): can we have something cheaper than Function?
   Function _release; // 8
 
   /// The record that triggers notifyListeners

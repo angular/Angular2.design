@@ -19,7 +19,8 @@ import "dart:html" show Element, ShadowRoot;
  */
 class DirectiveInjector {
   ProtoDirectiveInjector _protoInjector;
-  DirectiveInjector _parent;
+  Injector injector;
+  DirectiveInjector _parent, _next, _prev, _head, _tail;
   
 
   /**

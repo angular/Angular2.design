@@ -96,6 +96,7 @@ class View extends LinkedListEntry<View> {
   final List<DirectiveInjector> directiveInjectors = null;
 
   /** 
+   * TODO(tbosch) rather executed in top-down order?
    * A list of all scheduled DOM read operations. Use head/tail to build the list. 
    * These operations must be executed in the bottom-up order.
   */
@@ -107,7 +108,7 @@ class View extends LinkedListEntry<View> {
   */
   final List<Function> domWrites = null;
   
-    // TODO(misko/tobias): Do we actually need diges/flush pair? is Single WatchGroup enough?
+    // TODO(misko/tobias): Do we actually need digest/flush pair? is Single WatchGroup enough?
   final WatchGroup watchGroupDigest = null;
   final WatchGroup watchGroupFlush = null;
 

@@ -5,15 +5,13 @@ import "record.dart" show Record;
 class ProtoRecord {
   // SAME FIELDS AS RECORD (BUT PROTOTYPE VERSIONS)
 
-  // negative modes are same as positive ones, 
-  // but should be removed from the check queue after check.
-  int _mode;
+  int _mode; // See Record.MODE_*
 
   /// order list of all records. Including head/tail markers
-  ProtoRecord _next, _previous;
+  ProtoRecord _next, _prev;
 
-  /// next record to dirty check (doubly to remove notified records)
-  ProtoRecord _checkNext, _checkPrevious;
+  /// next record to dirty check
+  ProtoRecord _checkNext, _checkPrev;
 
   // next notifier
   ProtoRecord _notifierNext;

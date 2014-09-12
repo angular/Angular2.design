@@ -57,4 +57,6 @@ abstract class Directive {
     this.observe,
     this.canChangeModel
   });
+  
+  // TODO(misko): describe how many arguments do
 }

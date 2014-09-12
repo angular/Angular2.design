@@ -1,0 +1,25 @@
+import {DOM, Element} from 'dom';
+
+class Application {
+
+  run() {
+    var element:Element = DOM.query('body');
+    DOM.innerHTML(element, 'Hello World');
+  }
+}
+
+/////////////////////////////
+// TRANSPILED TO
+/////////////////////////////
+/*
+
+import 'dom.dart' show DOM, Element;
+
+class Apllication {
+  run() {
+    Element element = DOM.query('body');
+    DOM.innerHTML(element, 'Hello World');
+  }
+}
+
+*/

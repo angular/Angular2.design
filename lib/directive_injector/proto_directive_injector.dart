@@ -5,7 +5,8 @@ import "key_map.dart" show KeyMap;
 import "../injector/injector.dart" show Injector;
 
 class ProtoDirectiveInjector {
-  Injector injector;
+  ProtoDirectiveInjector parent, next, prev, head, tail;
+  DirectiveInjector cloneingInstance;
   KeyMap keyMap;
   /// Because DI tree is sparse, this shows how far away is the Parent DI
   int parentDistance = 1; /// 1 for non-sparse/normal depth.

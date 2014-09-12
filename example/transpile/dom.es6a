@@ -1,0 +1,7 @@
+export var Element = window.HTMLElement;
+export class DOM {
+  static query(selector:String):Array => window.document.querySelectorAll(selector);
+  static innerHTML(element:Element, html:String) {
+    element.innerHTML = html;
+  }
+}

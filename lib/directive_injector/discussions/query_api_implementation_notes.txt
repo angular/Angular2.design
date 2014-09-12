@@ -80,7 +80,7 @@ The creation of the second Pane results in:
 ...
 
 
-
+TODO(tbosch): How does this work together with ViewPorts, e.g. ng-repeat'ed tabs?
 
 
 Invididual Operations:
